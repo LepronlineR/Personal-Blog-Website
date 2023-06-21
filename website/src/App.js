@@ -1,27 +1,49 @@
-import ArtcileViewer from "./scenes/ArtcileViewer";
-import Landing from "./scenes/Landing";
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Outlet,
 } from "react-router-dom";
+import ArticleViewer from "./scenes/ArticleViewer";
+import Landing from "./scenes/Landing";
+import ErrorPage from "./scenes/ErrorPage"
+import Article from "./scenes/Article";
+import Navbar from "./components/Navbar";
+
+const Layout = () => {
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landing/>
+    element: <Layout/>,
+    errorElement: <ErrorPage/>,
+    children: [
+      {
+        path: "/",
+        element: <Landing/>,
+      },
+      {
+        path: "/articles",
+        element: <ArticleViewer/>
+      },
+      {
+        path: "/articles/:name",
+        element: <Article/>
+      },
+    ]
   },
-  {
-    path: "/articles",
-    element: <ArticleViewer/>
-  }
 ]);
 
 function App() {
   return (
-    <div className="app">
-      <div className="container bg-midnight-blue w-5/6 mx-auto md:h-full">
-        <RouterProvider router={router} />
-      </div>
+    <div className="app bg-midnight-blue">
+      <RouterProvider router={router} />
     </div>
   );
 }

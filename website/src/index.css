@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Quicksand&family=Rubik&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, 
+body, 
+#root,
+.app {
+    height: 100%;
+    background-color: #292727;
+    @apply text-green;
+}
+
+* {
+    font-family: quicksand;
+}

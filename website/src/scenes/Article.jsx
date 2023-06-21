@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Article = () => {
+const Article = ({ articleParameters }) => {
+  const articleName = articleParameters.params.name;
   return (
-    <div>Article</div>
+    <div> This article is named {articleName} </div>
   )
 }
 
