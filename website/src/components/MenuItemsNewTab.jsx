@@ -26,7 +26,7 @@ const MenuItemsNewTab = ({ pageName, websiteName }) => {
             }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className="text-xl mr-1 ml-10"
+            className="text-xl"
         >
             <button 
                 onClick={() => openNewTabLink(websiteName)}

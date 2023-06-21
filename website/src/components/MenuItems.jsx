@@ -25,7 +25,7 @@ const MenuItems = ({pageName, pageID}) => {
             }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className="text-xl mr-1 ml-10"
+            className="text-xl mr-12"
         >
             <a href={`${pageID}`}> { pageName } </a>
         </motion.div>

@@ -9,7 +9,7 @@ const Navbar = () => {
         className="h-[50px] flex shadow-xl sticky top-0"
     >
         <div
-            className="flex items-center w-full"
+            className="flex items-center w-full mx-12"
         >
             <MenuItems 
                 pageName="Home"
@@ -25,7 +25,7 @@ const Navbar = () => {
             />
         </div>
         <SearchBar
-            className="flex items-end"
+            className="flex items-center w-full"
         />
     </div>
   )

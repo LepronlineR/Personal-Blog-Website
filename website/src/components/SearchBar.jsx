@@ -12,35 +12,42 @@ const SearchBar = () => {
     }
 
     const onSearch = (searchValue) => {
-        // fetch search results
-        console.log('user searched for: ', searchValue);
+        setValue(searchValue);
     }
 
     return (
-    <div className="bg-transparent w-full rounded-lg h-15 p-2 shadow-md items-end">
-        <div>
+    <div className="bg-transparent p-2 shadow-md block">
+        <div className="flex">
             <button onClick={() => onSearch(value)}>
                 <FontAwesomeIcon
                 icon={faSearch} color="#A5E1AD" 
                 className="w-10"/>
             </button>
             <input 
-                className="bg-gray w-auto rounded-xl border-red"
+                className="bg-gray rounded-xl text-xl text-center"
                 placeholder="search for an article"
                 value={value}
                 onChange={onChange}
             />
         </div>
-        <div >
+        <div 
+            className="bg-gray flex flex-col"
+        >
             {data.filter(item => {
                 const search  = value.toLowerCase();
                 const articleName = item.article_name.toLowerCase();
 
-                return search && articleName.startsWith(search)
-            }).map((item) => (
-                <div onClick="">
-                    {item.article_names}
-                </div>
+                return search && articleName.startsWith(search);
+            })
+            .slice(0, 6)
+            .map((item) => (
+                <a 
+                    className="cursor-pointer text-left m-3"
+                    href={`articles/${item.article_id}`}
+                    key={item.article_id}
+                >
+                    {item.article_name}
+                </a>
             ))}
             
         </div>
