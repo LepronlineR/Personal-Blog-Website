@@ -1,9 +1,25 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
+import ReactMarkdown from 'react-markdown'
+
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
 
 import temp_image from '../assets/images/fibonacci-naive.png'
-//import temp_latex from '../assets/latex/vector_spaces.tex'
 
 const Article = () => {
+
+  const fileName = "test.md"
+  const [markdown, setMarkdown] = useState("");
+
+  useEffect(() => {
+    import(`../assets/markdown/${fileName}`)
+      .then(file => {
+        fetch(file.default)
+          .then(file => file.text())
+          .then(file => setMarkdown(file))
+          .catch(error => console.log(error))
+      }).catch(error => console.log(error))
+  });
 
   return (
     <div>
@@ -25,8 +41,15 @@ const Article = () => {
           </div>
         </div>
       </div>
-      { /* content */}
 
+      { /* content */}
+      <ReactMarkdown 
+        remarkPlugins={[ remarkMath ]}
+        rehypePlugins={[ rehypeKatex ]}
+        className="text-white p-12"
+      >
+        {markdown}
+      </ReactMarkdown>
     </div>
   )
 }
