@@ -20,6 +20,7 @@ module.exports = {
         "dark-cyan": "#4CA1A3",
         green: "#A5E1AD",
         "light-green": "#4bc03f",
+        "dimmed-background": "hsla(0, 0%, 0%, 0.6)"
       },
       fontFamily: {
         quicksand: ["Quicksand", "sans-serif"],

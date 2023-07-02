@@ -1,27 +1,33 @@
 import React from 'react'
-import { MathJax, MathJaxContext } from "better-react-mathjax";
 
-import image from '../assets/images/fibonacci-naive.png'
-import latex from '../assets/latex/algorithms.tex'
+import temp_image from '../assets/images/fibonacci-naive.png'
+//import temp_latex from '../assets/latex/vector_spaces.tex'
 
 const Article = () => {
 
-  const config = {
-    loader: { load: ["[tex]/html"]},
-    tex: {
-      packages: { "[+]": ["html"]},
-      inlineMath: [["$", "$"]],
-      displayMath: [["$$", "$$"]]
-    }
-  }
-
-  const equation = "$x+y^2 = z$";
-
   return (
-    <MathJaxContext version={3} config={config}>
-          <h2>Basic MathJax example with Latex</h2>
-          <MathJax>{equation}</MathJax>
-    </MathJaxContext>
+    <div>
+      { /* header */ }
+      <div
+      className="relative overflow-hidden bg-cover bg-no-repeat h-[700px]">
+        <img
+          src={temp_image}
+          className="object-fill"
+          alt="missing"/>
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full 
+          overflow-hidden bg-fixed bg-dimmed-background">
+          <div className="flex h-full items-center justify-center">
+            { /* Title of the article */}
+            <h1 className="text-white opacity-100 text-6xl font-rubik">
+              Title of this article
+            </h1>
+          </div>
+        </div>
+      </div>
+      { /* content */}
+
+    </div>
   )
 }
 
