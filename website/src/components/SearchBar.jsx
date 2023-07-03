@@ -43,7 +43,7 @@ const SearchBar = () => {
             .map((item) => (
                 <a 
                     className="cursor-pointer text-left m-3"
-                    href={`articles/${item.article_id}`}
+                    href={`blog/${item.article_id}`}
                     key={item.article_id}
                 >
                     {item.article_name}

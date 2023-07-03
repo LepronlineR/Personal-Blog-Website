@@ -15,7 +15,7 @@ const Navbar = () => {
         >
             <MenuItems
                 pageName="Blog"
-                pageID="articles"
+                pageID="blog"
             />
             <MenuItems 
                 pageName="About Me"

@@ -29,11 +29,11 @@ const router = createBrowserRouter([
         element: <Landing/>,
       },
       {
-        path: "/articles",
+        path: "/blog",
         element: <ArticleViewer/>
       },
       {
-        path: "/article",
+        path: "/blog/:postId",
         element: <Article/>
       },
     ]
