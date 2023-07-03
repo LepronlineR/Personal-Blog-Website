@@ -1,3 +1,4 @@
 [
-    { "article_name": "Fibonacci", "article_id": 0, "article_image": "fibonacci-naive.png", "article_markdown": "test.md" }
+    { "article_name": "Fibonacci", "article_id": 0, "article_image": "fibonacci-naive.png", "article_markdown": "test.md" },
+    { "article_name": "The Terms of Service", "article_id": 1, "article_image": "213123213.png", "article_markdown": "test_simple.md" }
 ]

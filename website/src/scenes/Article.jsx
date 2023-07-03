@@ -44,10 +44,10 @@ const Article = () => {
     <div>
       { /* header */ }
       <div
-      className="relative overflow-hidden bg-cover bg-no-repeat h-[700px]">
+      className="relative overflow-hidden bg-cover bg-no-repeat h-[700px] items-center">
         <img
           src={image}
-          className="object-fill"
+          className="object-fill justify-center"
           alt="missing"/>
         <div
           className="absolute bottom-0 left-0 right-0 top-0 h-full w-full 
