@@ -1,310 +1,163 @@
-# Markdown: Syntax
-
-*   [Overview](#overview)
-    *   [Philosophy](#philosophy)
-    *   [Inline HTML](#html)
-    *   [Automatic Escaping for Special Characters](#autoescape)
-*   [Block Elements](#block)
-    *   [Paragraphs and Line Breaks](#p)
-    *   [Headers](#header)
-    *   [Blockquotes](#blockquote)
-    *   [Lists](#list)
-    *   [Code Blocks](#precode)
-    *   [Horizontal Rules](#hr)
-*   [Span Elements](#span)
-    *   [Links](#link)
-    *   [Emphasis](#em)
-    *   [Code](#code)
-    *   [Images](#img)
-*   [Miscellaneous](#misc)
-    *   [Backslash Escapes](#backslash)
-    *   [Automatic Links](#autolink)
-
-
-**Note:** This document is itself written using Markdown; you
-can [see the source for it by adding '.text' to the URL](/projects/markdown/syntax.text).
+## React Syntax Highlighter
 
-----
+[![Actions Status](https://github.com/react-syntax-highlighter/react-syntax-highlighter/workflows/Node%20CI/badge.svg)](https://github.com/conorhastings/react-syntax-highlighter/actions)
+[![npm](https://img.shields.io/npm/dm/react-syntax-highlighter.svg?style=flat-square)](https://www.npmjs.com/package/react-syntax-highlighter)
 
-## Overview
+<!-- [![codecov](https://codecov.io/gh/conorhastings/react-syntax-highlighter/branch/master/graph/badge.svg)](https://codecov.io/gh/conorhastings/react-syntax-highlighter) -->
 
-### Philosophy
+Syntax highlighting component for `React` using the seriously super amazing <a href="https://github.com/wooorm/lowlight">lowlight</a> and <a href="https://github.com/wooorm/refractor">refractor</a> by <a href="https://github.com/wooorm">wooorm</a>
 
-Markdown is intended to be as easy-to-read and easy-to-write as is feasible.
+Check out a small demo <a href="https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/">here</a> and see the component in action highlighting the generated test code <a href="https://conorhastings.github.io/redux-test-recorder/demo/">here</a>.
 
-Readability, however, is emphasized above all else. A Markdown-formatted
-document should be publishable as-is, as plain text, without looking
-like it's been marked up with tags or formatting instructions. While
-Markdown's syntax has been influenced by several existing text-to-HTML
-filters -- including [Setext](http://docutils.sourceforge.net/mirror/setext.html), [atx](http://www.aaronsw.com/2002/atx/), [Textile](http://textism.com/tools/textile/), [reStructuredText](http://docutils.sourceforge.net/rst.html),
-[Grutatext](http://www.triptico.com/software/grutatxt.html), and [EtText](http://ettext.taint.org/doc/) -- the single biggest source of
-inspiration for Markdown's syntax is the format of plain text email.
+For React Native you can use <a href='https://github.com/conorhastings/react-native-syntax-highlighter'>react-native-syntax-highlighter</a>
 
-## Block Elements
+### Install
 
-### Paragraphs and Line Breaks
+`npm install react-syntax-highlighter --save`
 
-A paragraph is simply one or more consecutive lines of text, separated
-by one or more blank lines. (A blank line is any line that looks like a
-blank line -- a line containing nothing but spaces or tabs is considered
-blank.) Normal paragraphs should not be indented with spaces or tabs.
+### Why This One?
 
-The implication of the "one or more consecutive lines of text" rule is
-that Markdown supports "hard-wrapped" text paragraphs. This differs
-significantly from most other text-to-HTML formatters (including Movable
-Type's "Convert Line Breaks" option) which translate every line break
-character in a paragraph into a `<br />` tag.
+There are other syntax highlighters for `React` out there so why use this one? The biggest reason is that all the others rely on triggering calls in `componentDidMount` and `componentDidUpdate` to highlight the code block and then insert it in the render function using `dangerouslySetInnerHTML` or just manually altering the DOM with native javascript. This utilizes a syntax tree to dynamically build the virtual dom which allows for updating only the changing DOM instead of completely overwriting it on any change, and because of this it is also using more idiomatic `React` and allows the use of pure function components brought into `React` as of `0.14`.
 
-When you *do* want to insert a `<br />` break tag using Markdown, you
-end a line with two or more spaces, then type return.
+### Javascript Styles!
 
-### Headers
+One of the biggest pain points for me trying to find a syntax highlighter for my own projects was the need to put a stylesheet tag on my page. I wanted to provide out of the box code styling with my modules without requiring awkward inclusion of another libs stylesheets. The styles in this module are all javascript based, and all styles supported by `highlight.js` have been ported!
 
-Markdown supports two styles of headers, [Setext] [1] and [atx] [2].
+I do realize that javascript styles are not for everyone, so you can optionally choose to use css based styles with classNames added to elements by setting the prop `useInlineStyles` to `false` (it defaults to `true`).
 
-Optionally, you may "close" atx-style headers. This is purely
-cosmetic -- you can use this if you think it looks better. The
-closing hashes don't even need to match the number of hashes
-used to open the header. (The number of opening hashes
-determines the header level.)
+### Use
 
+#### props
 
-### Blockquotes
+- `language` - the language to highlight code in. Available options [here for hljs](./AVAILABLE_LANGUAGES_HLJS.MD) and [here for prism](./AVAILABLE_LANGUAGES_PRISM.MD). (pass text to just render plain monospaced text)
+- `style` - style object required from styles/hljs or styles/prism directory depending on whether or not you are importing from `react-syntax-highlighter` or `react-syntax-highlighter/prism` directory [here for hljs](./AVAILABLE_STYLES_HLJS.MD). and [here for prism](./AVAILABLE_STYLES_PRISM.MD). `import { style } from 'react-syntax-highlighter/dist/esm/styles/{hljs|prism}'` . Will use default if style is not included.
+- `children` - the code to highlight.
+- `customStyle` - prop that will be combined with the top level style on the pre tag, styles here will overwrite earlier styles.
+- `codeTagProps` - props that will be spread into the `<code>` tag that is the direct parent of the highlighted code elements. Useful for styling/assigning classNames.
+- `useInlineStyles` - if this prop is passed in as false, react syntax highlighter will not add style objects to elements, and will instead append classNames. You can then style the code block by using one of the CSS files provided by highlight.js.
+- `showLineNumbers` - if this is enabled line numbers will be shown next to the code block.
+- `showInlineLineNumbers` - if this is enabled in conjunction with `showLineNumbers`, line numbers will be rendered into each line, which allows line numbers to display properly when using renderers such as <a href="https://github.com/conorhastings/react-syntax-highlighter-virtualized-renderer">react-syntax-highlighter-virtualized-renderer</a>. (This prop will have no effect if `showLineNumbers` is `false`.)
+- `startingLineNumber` - if `showLineNumbers` is enabled the line numbering will start from here.
+- `lineNumberContainerStyle` - the line numbers container default to appearing to the left with 10px of right padding. You can use this to override those styles.
+- `lineNumberStyle` - inline style to be passed to the span wrapping each number. Can be either an object or a function that receives current line number as argument and returns style object.
+- `wrapLines` - a boolean value that determines whether or not each line of code should be wrapped in a parent element. defaults to false, when false one can not take action on an element on the line level. You can see an example of what this enables <a href="https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/diff.html">here</a>
+- `wrapLongLines` - boolean to specify whether to style the `<code>` block with `white-space: pre-wrap` or `white-space: pre`. [Demo](https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/)
+- `lineProps` - props to be passed to the span wrapping each line if wrapLines is true. Can be either an object or a function that receives current line number as argument and returns props object.
+- `renderer` - an optional custom renderer for rendering lines of code. See <a href="https://github.com/conorhastings/react-syntax-highlighter-virtualized-renderer">here</a> for an example.
+- `PreTag` - the element or custom react component to use in place of the default pre tag, the outermost tag of the component (useful for custom renderer not targeting DOM).
+- `CodeTag` - the element or custom react component to use in place of the default code tag, the second tag of the component tree (useful for custom renderer not targeting DOM).
+- `spread props` pass arbitrary props to pre tag wrapping code.
 
-Markdown uses email-style `>` characters for blockquoting. If you're
-familiar with quoting passages of text in an email message, then you
-know how to create a blockquote in Markdown. It looks best if you hard
-wrap the text and put a `>` before every line:
-
-> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-> 
-> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-> id sem consectetuer libero luctus adipiscing.
-
-Markdown allows you to be lazy and only put the `>` before the first
-line of a hard-wrapped paragraph:
-
-> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-
-> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-id sem consectetuer libero luctus adipiscing.
-
-Blockquotes can be nested (i.e. a blockquote-in-a-blockquote) by
-adding additional levels of `>`:
-
-> This is the first level of quoting.
->
-> > This is nested blockquote.
->
-> Back to the first level.
-
-Blockquotes can contain other Markdown elements, including headers, lists,
-and code blocks:
-
-> ## This is a header.
-> 
-> 1.   This is the first list item.
-> 2.   This is the second list item.
-> 
-> Here's some example code:
-> 
->     return shell_exec("echo $input | $markdown_script");
-
-Any decent text editor should make email-style quoting easy. For
-example, with BBEdit, you can make a selection and choose Increase
-Quote Level from the Text menu.
-
-
-### Lists
-
-Markdown supports ordered (numbered) and unordered (bulleted) lists.
-
-Unordered lists use asterisks, pluses, and hyphens -- interchangably
--- as list markers:
-
-*   Red
-*   Green
-*   Blue
-
-is equivalent to:
-
-+   Red
-+   Green
-+   Blue
-
-and:
-
--   Red
--   Green
--   Blue
-
-Ordered lists use numbers followed by periods:
-
-1.  Bird
-2.  McHale
-3.  Parish
-
-It's important to note that the actual numbers you use to mark the
-list have no effect on the HTML output Markdown produces. The HTML
-Markdown produces from the above list is:
-
-If you instead wrote the list in Markdown like this:
-
-1.  Bird
-1.  McHale
-1.  Parish
-
-or even:
-
-3. Bird
-1. McHale
-8. Parish
-
-you'd get the exact same HTML output. The point is, if you want to,
-you can use ordinal numbers in your ordered Markdown lists, so that
-the numbers in your source match the numbers in your published HTML.
-But if you want to be lazy, you don't have to.
-
-To make lists look nice, you can wrap items with hanging indents:
-
-*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-    viverra nec, fringilla in, laoreet vitae, risus.
-*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    Suspendisse id sem consectetuer libero luctus adipiscing.
-
-But if you want to be lazy, you don't have to:
-
-*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-viverra nec, fringilla in, laoreet vitae, risus.
-*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-Suspendisse id sem consectetuer libero luctus adipiscing.
-
-List items may consist of multiple paragraphs. Each subsequent
-paragraph in a list item must be indented by either 4 spaces
-or one tab:
-
-1.  This is a list item with two paragraphs. Lorem ipsum dolor
-    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
-    mi posuere lectus.
-
-    Vestibulum enim wisi, viverra nec, fringilla in, laoreet
-    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
-    sit amet velit.
-
-2.  Suspendisse id sem consectetuer libero luctus adipiscing.
-
-It looks nice if you indent every line of the subsequent
-paragraphs, but here again, Markdown will allow you to be
-lazy:
-
-*   This is a list item with two paragraphs.
-
-    This is the second paragraph in the list item. You're
-only required to indent the first line. Lorem ipsum dolor
-sit amet, consectetuer adipiscing elit.
-
-*   Another item in the same list.
-
-To put a blockquote within a list item, the blockquote's `>`
-delimiters need to be indented:
-
-*   A list item with a blockquote:
-
-    > This is a blockquote
-    > inside a list item.
-
-To put a code block within a list item, the code block needs
-to be indented *twice* -- 8 spaces or two tabs:
-
-*   A list item with a code block:
-
-        <code goes here>
-
-### Code Blocks
-
-Pre-formatted code blocks are used for writing about programming or
-markup source code. Rather than forming normal paragraphs, the lines
-of a code block are interpreted literally. Markdown wraps a code block
-in both `<pre>` and `<code>` tags.
-
-To produce a code block in Markdown, simply indent every line of the
-block by at least 4 spaces or 1 tab.
-
-This is a normal paragraph:
-
-    This is a code block.
-
-Here is an example of AppleScript:
-
-    tell application "Foo"
-        beep
-    end tell
-
-A code block continues until it reaches a line that is not indented
-(or the end of the article).
-
-Within a code block, ampersands (`&`) and angle brackets (`<` and `>`)
-are automatically converted into HTML entities. This makes it very
-easy to include example HTML source code using Markdown -- just paste
-it and indent it, and Markdown will handle the hassle of encoding the
-ampersands and angle brackets. For example, this:
-
-    <div class="footer">
-        &copy; 2004 Foo Corporation
-    </div>
-
-Regular Markdown syntax is not processed within code blocks. E.g.,
-asterisks are just literal asterisks within a code block. This means
-it's also easy to use Markdown to write about Markdown's own syntax.
-
-```
-tell application "Foo"
-    beep
-end tell
+```js
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+const Component = () => {
+  const codeString = '(num) => num + 1';
+  return (
+    <SyntaxHighlighter language="javascript" style={docco}>
+      {codeString}
+    </SyntaxHighlighter>
+  );
+};
 ```
 
-## Span Elements
+### Prism
 
-### Links
+Using <a href="https://github.com/wooorm/refractor">refractor</a> we can use an ast built on languages from Prism.js instead of highlight.js. This is beneficial especially when highlighting jsx, a problem long unsolved by this module. The semantics of use are basically the same although a light mode is not yet supported (though is coming in the future). You can see a demo(with jsx) using Prism(refractor) <a href="https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/prism.html">here</a>.
 
-Markdown supports two style of links: *inline* and *reference*.
+```js
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+const Component = () => {
+  const codeString = '(num) => num + 1';
+  return (
+    <SyntaxHighlighter language="javascript" style={dark}>
+      {codeString}
+    </SyntaxHighlighter>
+  );
+};
+```
 
-In both styles, the link text is delimited by [square brackets].
+### Light Build
 
-To create an inline link, use a set of regular parentheses immediately
-after the link text's closing square bracket. Inside the parentheses,
-put the URL where you want the link to point, along with an *optional*
-title for the link, surrounded in quotes. For example:
+React Syntax Highlighter used in the way described above can have a fairly large footprint. For those that desire more control over what exactly they need, there is an option to import a light build. If you choose to use this you will need to specifically import desired languages and register them using the registerLanguage export from the light build. There is also no default style provided.
 
-This is [an example](http://example.com/) inline link.
+```js
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
+import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco';
 
-[This link](http://example.net/) has no title attribute.
+SyntaxHighlighter.registerLanguage('javascript', js);
+```
 
-### Emphasis
+You can require `PrismLight` from `react-syntax-highlighter` to use the prism light build instead of the standard light build.
 
-Markdown treats asterisks (`*`) and underscores (`_`) as indicators of
-emphasis. Text wrapped with one `*` or `_` will be wrapped with an
-HTML `<em>` tag; double `*`'s or `_`'s will be wrapped with an HTML
-`<strong>` tag. E.g., this input:
+```jsx
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
+import prism from 'react-syntax-highlighter/dist/esm/styles/prism/prism';
 
-*single asterisks*
+SyntaxHighlighter.registerLanguage('jsx', jsx);
+```
 
-_single underscores_
+### Async Build
 
-**double asterisks**
+For optimal bundle size for rendering ASAP, there's a async version of prism light & light.
+This versions requires you to use a bundler that supports the dynamic import syntax, like webpack.
+This will defer loading of refractor (17kb gzipped) & the languages, while code splits are loaded the code will show with line numbers
+but without highlighting.
 
-__double underscores__
+Prism version:
 
-### Code
+```js
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+```
 
-To indicate a span of code, wrap it with backtick quotes (`` ` ``).
-Unlike a pre-formatted code block, a code span indicates code within a
-normal paragraph. For example:
+Highlight version
 
-Use the `printf()` function.
+```js
+import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
+```
+
+#### Supported languages
+
+Access via the `supportedLanguages` static field.
+
+```js
+SyntaxHighlighter.supportedLanguages;
+```
+
+### Built with React Syntax Highlighter
+
+- [mdx-deck](https://github.com/jxnblk/mdx-deck) - MDX-based presentation decks
+- [codecrumbs](https://github.com/Bogdan-Lyashenko/codecrumbs) - Learn, design or document codebase by putting breadcrumbs in source code. Live updates, multi-language support, and easy sharing.
+- [Spectacle Editor](https://github.com/FormidableLabs/spectacle-editor) - An Electron based app for creating, editing, saving, and publishing Spectacle presentations. With integrated Plotly support.
+- [Superset](https://github.com/airbnb/superset) - Superset is a data exploration platform designed to be visual, intuitive, and interactive.
+- [Daydream](https://github.com/segmentio/daydream) - A chrome extension to record your actions into a [nightmare](https://github.com/segmentio/nightmare) script
+- [CodeDoc](https://github.com/B1naryStudio/CodeDoc) - Electron based application build with React for creating project documentations
+- [React Component Demo](https://github.com/conorhastings/react-component-demo) - A React Component To make live editable demos of other React Components.
+- [Redux Test Recorder](https://github.com/conorhastings/redux-test-recorder) - a redux middleware to automatically generate tests for reducers through ui interaction. Syntax highlighter used by react plugin.
+- [GitPoint](https://github.com/gitpoint/git-point) - GitHub for iOS. Built with React Native. (built using react-native-syntax-highlighter)
+- [Yoga Layout Playground](https://yogalayout.com/playground) - generate code for yoga layout in multiple languages
+- [Kibana](https://github.com/elastic/kibana) - browser-based analytics and search dashboard for Elasticsearch.
+- [Golangci Web](https://github.com/golangci/golangci-web)
+- [Storybook Official Addons](https://github.com/storybooks/storybook)
+- [Microsoft Fast DNA](https://github.com/Microsoft/fast-dna/)
+- [Alibaba Ice](https://github.com/alibaba/ice)
+- [Uber BaseUI Docs](https://github.com/uber-web/baseui)
+- [React Select Docs](https://github.com/JedWatson/react-select)
+- [Auto-layout](https://github.com/0123cf/auto-layout) - use flex layout
+- [npmview](https://github.com/pd4d10/npmview) - A web application to view npm package files
+- [Static Forms](https://www.staticforms.xyz) - Free HTML forms for your static websites.
+- [React DemoTab](https://github.com/mkosir/react-demo-tab) - A React component to easily create demos of other components
+- [codeprinter](https://github.com/jaredpetersen/codeprinter) - Print out code easily
+- [Neumorphism](https://www.neumorphism.io) - CSS code generator for Soft UI/Neumorphism shadows
+- [grape-ui](https://www.grapeui.com) - Component library using styled-system and other open source components.
+- [✅ Good Arduino Code](https://goodarduinocode.com) - A curated library of Arduino Coding examples
+- [marmota.app](https://marmota.app) - A desktop app to create simple markdown presentations
+ 
+If your project uses react-syntax-highlighter please send a pr to add!
+
+### License
+
+MIT

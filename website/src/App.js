@@ -8,6 +8,7 @@ import Landing from "./scenes/Landing";
 import ErrorPage from "./scenes/ErrorPage"
 import Article from "./scenes/Article";
 import Navbar from "./components/Navbar";
+import Test from "./scenes/Test";
 
 const Layout = () => {
   return (
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/blog/:postId",
         element: <Article/>
+      },
+      {
+        path: "/test",
+        element: <Test/>
       },
     ]
   },
